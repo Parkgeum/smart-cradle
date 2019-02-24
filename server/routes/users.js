@@ -11,19 +11,22 @@ router.get('/', function(req, res, next) {
 });
 
 //회원가입
-router.post('/signup', function(req,res){
-  var signup = new User_info();
-  signup.id = req.body.id;
-  signup.password = req.body.password;
-  signup.username = req.body.username;
-  signup.email = req.body.email;
+router.post('/join', function(req,res){
+  var join = new User_info();
+  join.id = req.body.id;
+  join.password = req.body.password;
+  join.baby = req.body.baby;
+  join.gender = req.body.gender;
+  join.Byear = req.body.Byear;
+  join.Bmonth = req.body.Bmonth;
+  join.Bday = req.body.Bday;
 
   User_info.findOne({'id': req.body.id}, function(err, user){
     if (err) {
       console.err(err);
       throw err;
     } 
-    else if (user===null) User_info.create(signup, function() {res.send({success: true, type: "signup"})});
+    else if (user===null) User_info.create(join, function() {res.send({success: true, type: "join us"})});
     else res.send('이미 존재하는 id입니다.');
   })
 })

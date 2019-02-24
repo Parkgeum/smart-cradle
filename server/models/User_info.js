@@ -10,14 +10,16 @@ var User_info = new mongoose.Schema({
         type: String,
         required: 'Password can not be empty'
     },
-    username: {
+    baby:  {
         type: String,
-        required: 'username can not be empty'
+        required: 'baby can not be empty'
     },
-    email:  {
-        type: String,
-        required: 'email can not be empty'
-    }
+    gender: {
+        type: String
+    },
+    Byear: String,
+    Bmonth: String,
+    Bday: String
 });
 
 module.exports = mongoose.model('User_info',User_info);
