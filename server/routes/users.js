@@ -31,6 +31,12 @@ router.post('/join', function(req,res){
   })
 })
 
+//로그인
+router.post('/login', function(req, res) {
+  //var login_id = req.body.id;
+  //var login_password = req.body.password;
+  res.send('로그인 구현 화면');
+});
 
 
 module.exports = router;
