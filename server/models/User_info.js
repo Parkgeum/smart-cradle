@@ -23,7 +23,10 @@ var User_info = new mongoose.Schema({
     },
     Byear: String,
     Bmonth: String,
-    Bday: String
+    Bday: String,
+
+    history: [String]
+
 });
 
 module.exports = mongoose.model('User_info',User_info);
