@@ -1,5 +1,9 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/Smart', {useNewUrlParser: true});
+//mongoose.connect('mongodb://localhost:27017/Smart', {useNewUrlParser: true});
+var con = require('./../con');
+var mongo=con.mongo;
+
+mongoose.connect(mongo, {useNewUrlParser: true});
 
 var User_info = new mongoose.Schema({
     id: {
@@ -19,7 +23,10 @@ var User_info = new mongoose.Schema({
     },
     Byear: String,
     Bmonth: String,
-    Bday: String
+    Bday: String,
+
+    history: [String]
+
 });
 
 module.exports = mongoose.model('User_info',User_info);

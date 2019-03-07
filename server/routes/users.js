@@ -2,8 +2,11 @@ var express = require('express');
 var router = express.Router();
 var User_info = require('./../models/User_info.js');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/Smart', {useNewUrlParser: true});
+//mongoose.connect('mongodb://localhost:27017/Smart', {useNewUrlParser: true});
+var con = require('./../con');
+var mongo=con.mongo;
 
+mongoose.connect(mongo, {useNewUrlParser: true});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
