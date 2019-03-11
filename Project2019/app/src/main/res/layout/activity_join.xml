@@ -61,18 +61,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <EditText
-            android:id="@+id/joinpwinput2"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:hint="password 재확인"
-            android:inputType="textPassword" />
-
+                android:id="@+id/joinpwinput2"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:hint="password 재확인"
+                android:inputType="textPassword" />
             <ImageView
                 android:id="@+id/setImage"
                 android:layout_width="30dp"
                 android:layout_height="50dp"
-                android:scaleType="fitStart"
-                android:src="@drawable/unchecked" />
+                android:scaleType="fitCenter" />
            </LinearLayout>
      <!--   <EditText
             android:id="@+id/nicknameinput"

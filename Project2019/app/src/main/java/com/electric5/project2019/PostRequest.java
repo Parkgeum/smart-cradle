@@ -22,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import static com.electric5.project2019.ModeChange.act;
 
-public class PostRequest extends AsyncTask<JSONObject, Void, String> {
+public class PostRequest extends AsyncTask <JSONObject, Void, String> {
     Activity activity;
     URL url;
     static JSONObject user = null;
@@ -63,7 +63,7 @@ public class PostRequest extends AsyncTask<JSONObject, Void, String> {
                     break;
                 }
 
-                if(ModeChange.act==2) {
+                if(ModeChange.act==2) { // 메인 액티비티로
                     JSONObject s = null;
                     s = new JSONObject(sb.toString());
                     if (s.get("success").toString() == "true") {
@@ -76,9 +76,9 @@ public class PostRequest extends AsyncTask<JSONObject, Void, String> {
                             e.printStackTrace();
                         }
                         System.out.println(json.get("user"));
-                        System.out.println(json.get("token"));
-                        System.out.println(user.get("username"));
-                        //token = s.get("token").toString();    // 다솔이 주문할때 쓴 것. 여기선 필요 ㄴㄴ
+                        //System.out.println(json.get("token")); // 다솔이 주문할때 쓴 것. 여기선 필요 ㄴㄴ
+                        //System.out.println(user.get("username"));
+                        //token = s.get("token").toString();
                         //username = user.get("username").toString();
                     }
                 }
@@ -100,7 +100,6 @@ public class PostRequest extends AsyncTask<JSONObject, Void, String> {
             Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(activity,LoginActivity.class);
             activity.startActivity(intent);
-
         }
         else if(act==2){ // 메인 액티비티로
             Intent intent1 = new Intent(activity,MainActivity.class);
@@ -123,9 +122,9 @@ public class PostRequest extends AsyncTask<JSONObject, Void, String> {
             String key = itr.next();
             Object value = params.get(key);
 
-            if (first)
+            if (first)       //boolean first=true일 때 false로
                 first = false;
-            else
+            else            //false일 때
                 result.append("&");
 
             result.append(URLEncoder.encode(key, "UTF-8"));

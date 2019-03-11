@@ -31,37 +31,43 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton b5 = (ImageButton)findViewById(R.id.settingbutton); //환경설정
 
-        View.OnClickListener Clickname = new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             public void onClick(View v) {
                 switch(v.getId()){
                     case R.id.button1 : //실시간 영상 스트리밍
-                        finish();
+                        //finish();
                         Intent intent1 = new Intent(MainActivity.this, VideoActivity.class);
                         startActivity(intent1);
                         break;
 
                     case R.id.button2 : //정지 영상 (캡쳐) 모아보기
-                        finish();
+                        //finish();
                         Intent intent2 = new Intent(MainActivity.this, CaptureActivity.class);
                         startActivity(intent2);
                         break;
                     case R.id.button3 : //동작 제어
-                        finish();
+                        //finish();
                         Intent intent3 = new Intent(MainActivity.this, ControlActivity.class);
                         startActivity(intent3);
                         break;
                     case R.id.button4 : //게시판
-                        finish();
+                        //finish();
                         Intent intent4 = new Intent(MainActivity.this, BoardActivity.class);
                         startActivity(intent4);
                         break;
                     case R.id.settingbutton : //환경설정
-                        finish();
+                        //finish();
                         Intent intent5 = new Intent(MainActivity.this, SettingActivity.class);
                         startActivity(intent5);
                         break;
                 };
             }
         };
+
+        b1.setOnClickListener(listener);
+        b2.setOnClickListener(listener);
+        b3.setOnClickListener(listener);
+        b4.setOnClickListener(listener);
+        b5.setOnClickListener(listener);
     }
 }
