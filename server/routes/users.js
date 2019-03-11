@@ -55,4 +55,18 @@ router.post('/login', function(req, res) {
 });
 
 
+//회원정보 수정
+router.post('/userinfo', function(req, res){
+  var NewInfo;
+  NewInfo = req.body;
+
+  User_info.findOne({'id': req.body.id}, function(err, user){
+    if (err) {
+      res.send(err)
+    } 
+    else User_info.update(NewInfo, function() {res.send({success: true, type: "회원정보 수정"})});
+  })
+  
+})
+
 module.exports = router;
