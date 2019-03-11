@@ -36,10 +36,37 @@ router.post('/join', function(req,res){
 
 //로그인
 router.post('/login', function(req, res) {
-  //var login_id = req.body.id;
-  //var login_password = req.body.password;
-  res.send('로그인 구현 화면');
+  var login_id = req.body.id;
+  var login_password = req.body.password;
+  
+  var findLocalUser = {
+    id: login_id,
+    password: login_password
+  }
+
+  User_info.findOne(findLocalUser, function(err, user){
+    if (err) {
+      console.err(err);
+      throw err;
+    } 
+    else if (user===null) res.send({success: false, type: "아이디나 비밀번호를 다시 확인하세요"});
+    else res.send({success: true, type: "login"});
+  })
 });
 
+
+//회원정보 수정
+router.post('/userinfo', function(req, res){
+  var NewInfo;
+  NewInfo = req.body;
+
+  User_info.findOne({'id': req.body.id}, function(err, user){
+    if (err) {
+      res.send(err)
+    } 
+    else User_info.update(NewInfo, function() {res.send({success: true, type: "회원정보 수정"})});
+  })
+  
+})
 
 module.exports = router;
