@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     //TODO: url값 금정이한테 받아서 수정
-    final static String url = "http://10.0.2.2:3000/users/login"; //로컬호스트 10.0.2.2
+    final static String url = "http://172.30.79.216:3000/users/login"; //로컬호스트 10.0.2.2
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors( { origin: 'http://localhost:3000' }));  //바꿔줘야함
+//app.use(cors( { origin: 'http://localhost:3000' }));  //바꿔줘야함
 
 
 app.use('/', indexRouter);
@@ -53,7 +53,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-//app.listen(process.env.PORT, () => console.log(`Server started at port : ${process.env.PORT}`));
-
+var server = app.listen(80,function() {
+  console.log("Express server has started on port 80");
+})
 
 module.exports = app;

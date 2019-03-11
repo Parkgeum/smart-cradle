@@ -1,5 +1,6 @@
 package com.electric5.project2019;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,9 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.LongSummaryStatistics;
+import java.util.concurrent.ExecutionException;
+
 /*
 TODO: idcheckbutton 클릭이벤트 : joinidinput 중복체크(DB에 id 값이 있는지) - 토스트메시지 띄우기
 TODO: joinpwinput, joinpwinput2 값 일치해야 함
@@ -25,10 +29,11 @@ TODO: nicknameinput
 TODO: Join 버튼이 눌리면 LoginActivity로 되돌아 가게
 */
 
-public class JoinActivity extends AppCompatActivity {
+public class JoinActivity extends Activity {
 
     //TODO: url값 금정이한테 받아서 수정 ---  일단 로컬호스트로 테스트
-    final static String url = "http://223.194.128.47:8080/users/join"; //로컬호스트 10.0.2.2
+    final static String ip = "http://서버주소:80/users/join"; //로컬호스트 10.0.2.2
+    public static LongSummaryStatistics url;
 
     EditText join_pw, join_pw2;
     ImageView setImage;
@@ -77,8 +82,8 @@ public class JoinActivity extends AppCompatActivity {
                 EditText birthm = (EditText) findViewById(R.id.birthmonth);
                 EditText birthd = (EditText) findViewById(R.id.birthday);
 
-
-                // 비밀번호 & 비밀번호 재입력 텍스트 일치하는 지 비교
+/*
+                 비밀번호 & 비밀번호 재입력 텍스트 일치하는 지 비교
                 join_pw2.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -95,7 +100,7 @@ public class JoinActivity extends AppCompatActivity {
                     public void afterTextChanged(Editable editable) {
                     }
                 });
-
+*/
 
                 // RadioButton의 체크 상태에 따라 변화값을 주기 위해 setOncheckedChangeLinstener()메소드를 사용
                 gendergroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -129,8 +134,24 @@ public class JoinActivity extends AppCompatActivity {
                     postDataParam.put("Bmonth", birthm.getText().toString());
                     postDataParam.put("Bday", birthd.getText().toString());
 
+                    String result = new JoinRequest(JoinActivity.this).execute(postDataParam).get();
+                    JSONObject jsonObject = new JSONObject(result);
+                    String success = jsonObject.getString("success");
+
+                    if (success.equals("true")) {
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                        Toast.makeText(getApplicationContext(),"회원가입 완료",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"아이디가 중복됩니다",Toast.LENGTH_LONG).show();
+                    }
                 } catch (JSONException e) {
                     Log.e("TAG", "JSONEXception");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
 
                 ModeChange.act = 1; // 로그인 액티비티로
