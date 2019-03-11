@@ -9,7 +9,6 @@
     android:background="@drawable/bg"
     tools:contect=".JoinActivity">
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,155 +20,161 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:orientation="vertical"
+        android:padding="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID/PW 설정"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/joinidinput"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:hint="id"
+                android:inputType="text" />
+            <Button
+                android:id="@+id/idcheckbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID 확인"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:background="#00ff0000"/>
+        </LinearLayout>
+        <EditText
+            android:id="@+id/joinpwinput"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:hint="password"
+            android:inputType="textPassword" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+            android:id="@+id/joinpwinput2"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:hint="password 재확인"
+            android:inputType="textPassword" />
+
+            <ImageView
+                android:id="@+id/setImage"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/unchecked" />
+           </LinearLayout>
+     <!--   <EditText
+            android:id="@+id/nicknameinput"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:hint="닉네임 입력"
+            android:inputType="text" />
+            -->
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="기본 정보"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/babynameinput"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:hint="아기 이름"
+            android:inputType="text" />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/genderGroup"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="여자"
+                android:id="@+id/genderFemale"
+                android:layout_weight="1"
+                android:checked="true"/>
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="남자"
+                android:id="@+id/genderMale"
+                android:layout_weight="1"/>
+        </RadioGroup>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="생일"
+            android:textSize="20dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ID/PW 설정"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <EditText
-                    android:id="@+id/joinidinput"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:hint="id"
-                    android:inputType="text" />
-                <Button
-                    android:id="@+id/idcheckbutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ID 확인"
-                    android:textColor="@color/colorAccent"
-                    android:textStyle="bold"
-                    android:background="#00ff0000"/>
-            </LinearLayout>
-
+            android:orientation="horizontal"
+            android:gravity="center">
             <EditText
-                android:id="@+id/joinpwinput"
-                android:layout_width="200dp"
+                android:id="@+id/birthyear"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:hint="password"
-                android:inputType="textPassword" />
-
-            <EditText
-                android:id="@+id/joinpwinput2"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:hint="password 재확인"
-                android:inputType="textPassword" />
-
-            <!-- TODO: 닉네임 설정 넣기 (게시판 기능 추가 시) -->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="기본 정보"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
-            <EditText
-                android:id="@+id/babynameinput"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:hint="아기 이름"
+                android:hint="4자리"
                 android:inputType="text" />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/genderGroup"
-                android:layout_gravity="center_horizontal"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="female"
-                    android:id="@+id/genderWoman"
-                    android:layout_weight="1"
-                    android:checked="true"/>
-                <RadioButton
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="male"
-                    android:id="@+id/genderMan"
-                    android:layout_weight="1"/>
-            </RadioGroup>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:text="생일"
-                android:textSize="20dp"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <EditText
-                    android:id="@+id/birthyear"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:hint="4자리"
-                    android:inputType="text" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_marginRight="5dp"
-                    android:text="년"
-                    android:textColor="#000000"
-                    android:textSize="20dp"/>
-                <EditText
-                    android:id="@+id/birthmonth"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:hint="1~12"
-                    android:inputType="text" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_marginRight="5dp"
-                    android:text="월"
-                    android:textColor="#000000"
-                    android:textSize="20dp"/>
-                <EditText
-                    android:id="@+id/birthday"
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:hint="1~31"
-                    android:inputType="text" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="일"
-                    android:textColor="#000000"
-                    android:textSize="20dp"/>
-            </LinearLayout>
-
+                android:layout_marginRight="5dp"
+                android:text="년"
+                android:textColor="#000000"
+                android:textSize="20dp"/>
+            <EditText
+                android:id="@+id/birthmonth"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:hint="01~12"
+                android:inputType="text" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginRight="5dp"
+                android:text="월"
+                android:textColor="#000000"
+                android:textSize="20dp"/>
+            <EditText
+                android:id="@+id/birthday"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:hint="01~31"
+                android:inputType="text" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="일"
+                android:textColor="#000000"
+                android:textSize="20dp"/>
         </LinearLayout>
 
     </LinearLayout>
