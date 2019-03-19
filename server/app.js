@@ -9,11 +9,35 @@ var cors = require('cors');
 var con = require('./con');
 var mongo = con.mongo;
 
+var MongoClient = require('mongodb').MongoClient
+var Server = require('mongodb').Server;
+var mongoclient = new MongoClient(new Server('localhost',27017,{'native_parser':true}));
+var db = mongoclient.db('test');
+
+
+mongoclient.open(function(err, mongoclient) {
+
+  if(err) throw err;
+
+  console.log('mongo client connected');
+
+  http.createServer(app).listen(app.get('port'), function(){
+
+      console.log('Express server listening on port ' + app.get('port'));
+
+  });
+
+
+
+});
+
+/*
+
 mongoose.connect(mongo, {useNewUrlParser: true}, (err) => {
   if(!err) { console.log('MongoDB connection succeeded'); }
   else { console.log('MongoDB connection is error'+ JSON.stringify(err, undefined, 2)); }
 });
-
+*/
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var boardRouter = require('./routes/board');
