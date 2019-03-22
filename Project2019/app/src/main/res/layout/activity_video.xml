@@ -8,8 +8,9 @@
     android:orientation="vertical"
     tools:context=".VideoActivity">
 
-    <WebView
+    <VideoView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/webview"></WebView>
+        android:layout_margin="40dp"
+        android:id="@+id/videoview" />
 </LinearLayout>

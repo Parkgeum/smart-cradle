@@ -12,13 +12,9 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//TODO: loginbutton 클릭이벤트 : idinput, pwinput 값 받아서 회원 확인 후 Main으로 넘어가기
-
-
 public class LoginActivity extends AppCompatActivity {
 
-    //TODO: url값 금정이한테 받아서 수정
-    final static String url = "http://172.30.79.216:3000/users/login"; //로컬호스트 10.0.2.2
+    final static String url = "http://192.168.0.28:8080/users/login"; // TODO: 테스트 시 수정 http://서버주소:80/users/login
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         Button login = (Button)findViewById(R.id.loginbutton);
 
         //Login 버튼이 눌리면 MainActivity로 가게함
+        //TODO : 로그인 기능 구현
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         //Join 버튼이 눌리면 JoinActivity로 가게함
         join.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +54,5 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(gotojoin);
             }
         });
-
     }
 }

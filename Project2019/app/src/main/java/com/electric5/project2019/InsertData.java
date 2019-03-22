@@ -20,7 +20,6 @@ public class InsertData extends PostRequest {
 
         if(ModeChange.act == 1){
             serverURLStr = JoinActivity.url.toString();
-
         }
         else if(ModeChange.act==2){
             serverURLStr = LoginActivity.url.toString();

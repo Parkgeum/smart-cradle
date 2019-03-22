@@ -35,8 +35,8 @@ public class PostRequest extends AsyncTask <JSONObject, Void, String> {
     protected String doInBackground(JSONObject... postDataParams) {
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(10000 /* milliseconds */);
+            conn.setReadTimeout(3000 /* milliseconds */); //원래 10000
+            conn.setConnectTimeout(3000 /* milliseconds */); //원래 10000
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
@@ -53,7 +53,6 @@ public class PostRequest extends AsyncTask <JSONObject, Void, String> {
             int responseCode = conn.getResponseCode();
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
-
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuffer sb = new StringBuffer("");
                 String line = "";
@@ -76,10 +75,6 @@ public class PostRequest extends AsyncTask <JSONObject, Void, String> {
                             e.printStackTrace();
                         }
                         System.out.println(json.get("user"));
-                        //System.out.println(json.get("token")); // 다솔이 주문할때 쓴 것. 여기선 필요 ㄴㄴ
-                        //System.out.println(user.get("username"));
-                        //token = s.get("token").toString();
-                        //username = user.get("username").toString();
                     }
                 }
                 in.close();

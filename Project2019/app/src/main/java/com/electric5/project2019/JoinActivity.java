@@ -23,22 +23,17 @@ import java.util.LongSummaryStatistics;
 import java.util.concurrent.ExecutionException;
 
 /*
-TODO: idcheckbutton 클릭이벤트 : joinidinput 중복체크(DB에 id 값이 있는지) - 토스트메시지 띄우기
-TODO: joinpwinput, joinpwinput2 값 일치해야 함
-TODO: nicknameinput
-TODO: Join 버튼이 눌리면 LoginActivity로 되돌아 가게
+TODO: 추후 할일 리스트
+nicknameinput -- 게시판 기능
 */
 
 public class JoinActivity extends Activity {
-
-    //TODO: url값 금정이한테 받아서 수정 ---  일단 로컬호스트로 테스트
-    final static String ip = "http://서버주소:80/users/join"; //로컬호스트 10.0.2.2
+    final static String ip = "http://192.168.0.28:80/users/join"; // TODO: 테스트 시 수정 http://서버주소:80/users/join
     public static LongSummaryStatistics url;
 
-    EditText join_pw, join_pw2;
-    ImageView setImage;
+    EditText join_id, join_pw, join_pw2, babyname, birthy, birthm, birthd;
+    ImageView setImage; // 비밀번호 일치 확인 이미지
     RadioGroup gendergroup;
-    // RadioButton genderF, genderM;
     String gender;
 
 
@@ -48,88 +43,111 @@ public class JoinActivity extends Activity {
         setContentView(R.layout.activity_join);
 
         Button join2 = (Button) findViewById(R.id.joinbutton2);
-        Button idcheck = (Button) findViewById(R.id.idcheckbutton); // id 중복 체크 버튼
 
-        setImage = (ImageView)findViewById(R.id.setImage); // 비밀번호 일치 확인 이미지
+        join_id = (EditText) findViewById(R.id.joinidinput);
+        join_pw = (EditText) findViewById(R.id.joinpwinput);
+        join_pw2 = (EditText) findViewById(R.id.joinpwinput2);
+        setImage = (ImageView)findViewById(R.id.setImage);
+        babyname = (EditText) findViewById(R.id.babynameinput);
+        gendergroup = (RadioGroup) findViewById(R.id.genderGroup);
+        birthy = (EditText) findViewById(R.id.birthyear);
+        birthm = (EditText) findViewById(R.id.birthmonth);
+        birthd = (EditText) findViewById(R.id.birthday);
 
 
-/*      // TODO: idcheck 기능 구현
-        idcheck.setOnClickListener(new View.OnClickListener() {
+        // 비밀번호 & 비밀번호 재입력 텍스트 일치하는 지 비교
+        join_pw2.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                //id가 db에 있을 경우
-                Toast.makeText(getApplicationContext(), "이미 사용 중인 ID 입니다", Toast.LENGTH_LONG).show();
-                //id가 db에 없을 경우
-                Toast.makeText(getApplicationContext(), "사용 가능한 ID 입니다", Toast.LENGTH_LONG).show();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(join_pw.getText().toString().equals(join_pw2.getText().toString())) {
+                    setImage.setImageResource(R.drawable.checked);
+                } else {
+                    setImage.setImageResource(R.drawable.unchecked);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
             }
         });
-*/
 
-        //Join 버튼이 눌리면 LoginActivity로 가게함
-        // TODO: 창 쌓이지 않게 코드 수정
+
+        // RadioButton의 체크 상태에 따라 변화값을 주기 위해 setOncheckedChangeLinstener()메소드를 사용
+        gendergroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.genderFemale:
+                        gender = "F";
+                        break;
+                    case R.id.genderMale:
+                        gender = "M";
+                        break;
+                }
+            }
+        });
+
+        // Join 버튼이 눌리면 LoginActivity로 가게함
         join2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText join_id = (EditText) findViewById(R.id.joinidinput);
-                join_pw = (EditText) findViewById(R.id.joinpwinput);
-                join_pw2 = (EditText) findViewById(R.id.joinpwinput2);
 
-                EditText babyname = (EditText) findViewById(R.id.babynameinput);
+                // 필수 입력 -- 입력하지 않았을 시 회원가입 불가
+                if (join_id.getText().toString().length()==0) {
+                    Toast.makeText(JoinActivity.this, "ID를 입력하세요", Toast.LENGTH_SHORT).show();
+                    join_id.requestFocus();
+                    return;
+                }
+                if (join_pw.getText().toString().length()==0) {
+                    Toast.makeText(JoinActivity.this, "password를 입력하세요", Toast.LENGTH_SHORT).show();
+                    join_pw.requestFocus();
+                    return;
+                }
+                if (join_pw2.getText().toString().length()==0) {
+                    Toast.makeText(JoinActivity.this, "password 재확인을 입력하세요", Toast.LENGTH_SHORT).show();
+                    join_pw2.requestFocus();
+                    return;
+                }
+                if (babyname.getText().toString().length()==0) {
+                    Toast.makeText(JoinActivity.this, "아기 이름을 입력하세요", Toast.LENGTH_SHORT).show();
+                    babyname.requestFocus();
+                    return;
+                }
+                if (birthy.getText().toString().length()==0) {
+                    Toast.makeText(JoinActivity.this, "생년을 입력하세요", Toast.LENGTH_SHORT).show();
+                    birthy.requestFocus();
+                    return;
+                }
+                if (birthm.getText().toString().length()==0) {
+                    Toast.makeText(JoinActivity.this, "생월을 입력하세요", Toast.LENGTH_SHORT).show();
+                    birthm.requestFocus();
+                    return;
+                }
+                if (birthd.getText().toString().length()==0) {
+                    Toast.makeText(JoinActivity.this, "생일을 입력하세요", Toast.LENGTH_SHORT).show();
+                    birthd.requestFocus();
+                    return;
+                }
 
-                gendergroup = (RadioGroup) findViewById(R.id.genderGroup);
+                // 비밀번호&비밀번호확인 -- 일치하지 않으면 회원가입 불가
+                if(join_pw.getText().toString().equals(join_pw2.getText().toString())) {  }
+                else {
+                    Toast.makeText(JoinActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
+                    join_pw2.requestFocus();
+                    return;
+                }
 
-                EditText birthy = (EditText) findViewById(R.id.birthyear);
-                EditText birthm = (EditText) findViewById(R.id.birthmonth);
-                EditText birthd = (EditText) findViewById(R.id.birthday);
-
-/*
-                 비밀번호 & 비밀번호 재입력 텍스트 일치하는 지 비교
-                join_pw2.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        if(join_pw.getText().toString().equals(join_pw2.getText().toString())) {
-                            setImage.setImageResource(R.drawable.unchecked);
-                        } else {
-                            setImage.setImageResource(R.drawable.checked);
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                    }
-                });
-*/
-
-                // RadioButton의 체크 상태에 따라 변화값을 주기 위해 setOncheckedChangeLinstener()메소드를 사용
-                gendergroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        switch (checkedId){
-                            case R.id.genderFemale:
-                                gender = "F";
-                                break;
-                            case R.id.genderMale:
-                                gender = "M";
-                                break;
-                        }
-                    }
-                });
-
-
-
-                //JSON생성 : JSONObject는 JSON형태의 데이터를 관리해 주는 메서드
+                // JSON생성 : JSONObject는 JSON형태의 데이터를 관리해 주는 메서드
                 JSONObject postDataParam = new JSONObject();
 
                 try {
-                    postDataParam.put("id", join_id.getText().toString());//데이터 집어넣기
+                    //데이터 집어넣기
+                    postDataParam.put("id", join_id.getText().toString());
                     postDataParam.put("password", join_pw.getText().toString());
-                    //postDataParam.put("password2", join_pw2.getText().toString());
-
                     postDataParam.put("baby", babyname.getText().toString());
                     postDataParam.put("gender", gender);
-
                     postDataParam.put("Byear", birthy.getText().toString());
                     postDataParam.put("Bmonth", birthm.getText().toString());
                     postDataParam.put("Bday", birthd.getText().toString());
@@ -138,11 +156,12 @@ public class JoinActivity extends Activity {
                     JSONObject jsonObject = new JSONObject(result);
                     String success = jsonObject.getString("success");
 
+                    // id 중복 체크
                     if (success.equals("true")) {
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
-                        finish();
                         Toast.makeText(getApplicationContext(),"회원가입 완료",Toast.LENGTH_LONG).show();
+                        finish();
                     } else {
                         Toast.makeText(getApplicationContext(),"아이디가 중복됩니다",Toast.LENGTH_LONG).show();
                     }
@@ -154,8 +173,6 @@ public class JoinActivity extends Activity {
                     e.printStackTrace();
                 }
 
-                ModeChange.act = 1; // 로그인 액티비티로
-                new InsertData(JoinActivity.this).execute(postDataParam);
             }
         });
     }

@@ -30,26 +30,13 @@
             android:textColor="@color/colorPrimary"
             android:textSize="20dp"
             android:textStyle="bold"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/joinidinput"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:hint="id"
-                android:inputType="text" />
-            <Button
-                android:id="@+id/idcheckbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ID 확인"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold"
-                android:background="#00ff0000"/>
-        </LinearLayout>
+
+        <EditText
+            android:id="@+id/joinidinput"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:hint="id"
+            android:inputType="text" />
         <EditText
             android:id="@+id/joinpwinput"
             android:layout_width="200dp"

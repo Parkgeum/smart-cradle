@@ -15,7 +15,7 @@ public class ModeChange extends AppCompatActivity {
         setContentView(R.layout.activity_mode_change);
 
         Handler hd = new Handler();
-        hd.postDelayed(new modechangehandler(),3000);
+        hd.postDelayed(new modechangehandler(),1000);
     }
 
     private class modechangehandler implements Runnable{
