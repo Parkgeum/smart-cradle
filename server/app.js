@@ -9,11 +9,29 @@ var cors = require('cors');
 var con = require('./con');
 var mongo = con.mongo;
 
+
+var MongoClient = require('mongodb').MongoClient;
+function connect(mongo) {
+  return new Promise(function(resolve, reject) {
+    MongoClient.connect(mongo, function(err, db){
+      if (err) {
+        console.log('mongo connection error: ', err.message);
+        reject(err);
+      }
+      else {
+        console.log('connected to mongo');
+        resolve(db);
+      }
+    })
+  })
+}
+
+/*
 mongoose.connect(mongo, {useNewUrlParser: true}, (err) => {
   if(!err) { console.log('MongoDB connection succeeded'); }
   else { console.log('MongoDB connection is error'+ JSON.stringify(err, undefined, 2)); }
 });
-
+*/
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var boardRouter = require('./routes/board');
