@@ -36,4 +36,16 @@ router.post('/', function(req, res, next) {
       })
 });
 
+  //특정 id의 history데이터 시간역순으로 불러옴
+router.post('/get_info', function(req, res, next) {
+  User_info.findOne({'id': req.body.id},{'history':0}, function(err, user){
+    if (err) {
+      res.send(err);
+    } 
+    else { 
+      res.send(user);
+    }
+  })
+});
+
 module.exports = router;

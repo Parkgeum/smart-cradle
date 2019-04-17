@@ -30,7 +30,7 @@ router.post('/join', function(req,res){
       throw err;
     } 
     else if (user===null) User_info.create(join, function() {res.send({success: true, type: "join us"})});
-    else res.send('이미 존재하는 id입니다.');
+    else res.send({success: false, type: "ID"});
   })
 })
 

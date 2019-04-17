@@ -34,7 +34,9 @@ mongoose.connect(mongo, {useNewUrlParser: true}, (err) => {
 */
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var boardRouter = require('./routes/board');
+var boardRouter = require('./routes/boards');
+var testR = require('./routes/app_and');
+
 
 var app = express();
 
@@ -54,6 +56,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/boards', boardRouter);
+app.use('/test', testR);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
