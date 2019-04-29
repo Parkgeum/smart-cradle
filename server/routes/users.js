@@ -49,8 +49,8 @@ router.post('/login', function(req, res) {
       console.err(err);
       throw err;
     } 
-    else if (user===null) res.send({success: false, type: "아이디나 비밀번호를 다시 확인하세요"});
-    else res.send({success: true, type: "login"});
+    else if (user===null) res.send({success: false, data: "error"});
+    else res.send({success: true, data: user});
   })
 });
 
