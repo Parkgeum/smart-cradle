@@ -56,7 +56,7 @@ router.post('/login', function(req, res) {
 
 
 //회원정보 수정
-router.post('/userinfo', function(req, res){
+router.post('/editinfo', function(req, res){
   var NewInfo;
   NewInfo = req.body;
 
@@ -64,7 +64,7 @@ router.post('/userinfo', function(req, res){
     if (err) {
       res.send(err)
     } 
-    else User_info.update(NewInfo, function() {res.send({success: true, type: "회원정보 수정"})});
+    else user.updateOne(NewInfo, function() {res.send({success: true, type: "회원정보 수정"})});
   })
   
 })
