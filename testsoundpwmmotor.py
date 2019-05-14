@@ -2,8 +2,6 @@ from matplotlib.mlab import find
 import pyaudio
 import numpy as np
 
-import RPi.GPIO as GPIO#motor
-
 import pygame
 import time
 
@@ -18,16 +16,6 @@ import sys
 import requests
 import json
 
-#motor
-#m1_pin=20
-#m2_pin=21
-#GPIO.setmode(GPIO.BCM)
-#GPIO.setup(m1_pin,GPIO.OUT)
-#GPIO.setup(m2_pin,GPIO.OUT)
-#GPIO.output(m2_pin,0)
-#pw=GPIO.PWM(m1_pin,500)
-#duty=0
-#pw.start(0)
 
 MinDetect = 50
 chunk = 1024
@@ -51,12 +39,9 @@ data = requests.get(ctlurl)
 with open ('star.mp3','wb') as f:
     f.write(data.content)
 
-print(f.name);
-
-
 pygame.mixer.init()
 pygame.mixer.music.load(f.name)
-pygame.mixer.music.play()
+
 
 def Pitch(signal):
     signal = np.fromstring(signal, 'Int16')
@@ -108,7 +93,6 @@ def detecting():
                   #      babyDidCry = True
                     endFrame = i + 1500
                     print ("baby crying")                                                                                                                                                                                                                                
-#                   pw.ChangeDutyCycle(20)
                     pygame.mixer.music.play()
                     time.sleep(5)
                     #duty=20
@@ -116,11 +100,9 @@ def detecting():
                 else:
                     print ("noise")
                     pygame.mixer.music.stop()
-#                    pw.ChangeDutyCycle(0)
             else:
                 print ("noise")
                 pygame.mixer.music.stop()
-#                pw.ChangeDutyCycle(0)
   
 detecting()
    
