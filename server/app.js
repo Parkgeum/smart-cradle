@@ -4,6 +4,8 @@ var bodyParser = require('body-parser')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+//var multer = require('multer');
+//var formidable = require('formidable');
 var mongoose = require('mongoose');
 var cors = require('cors');
 var con = require('./con');
@@ -37,7 +39,6 @@ var usersRouter = require('./routes/users');
 var boardRouter = require('./routes/boards');
 var testR = require('./routes/app_and');
 
-
 var app = express();
 
 // view engine setup
@@ -50,14 +51,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(cors( { origin: 'http://localhost:3000' }));  //바꿔줘야함
+//app.use(express.urlencoded({upload: 'multipart'}));
+//app.use(multer({dest:"./uploads/"}).single('myFile'));
 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/boards', boardRouter);
 app.use('/test', testR);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -25,8 +25,11 @@ var User_info = new mongoose.Schema({
     Bmonth: String,
     Bday: String,
 
-    history: [String]
-
+    history: [String],
+    photo: { 
+        "title": String, 
+        "orgFileName": String, 
+        "saveFileName": String }
 });
 
 module.exports = mongoose.model('User_info',User_info);

@@ -49,14 +49,14 @@ router.post('/login', function(req, res) {
       console.err(err);
       throw err;
     } 
-    else if (user===null) res.send({success: false, type: "아이디나 비밀번호를 다시 확인하세요"});
-    else res.send({success: true, type: "login"});
+    else if (user===null) res.send({success: false, data: "error"});
+    else res.send({success: true, data: user});
   })
 });
 
 
 //회원정보 수정
-router.post('/userinfo', function(req, res){
+router.post('/editinfo', function(req, res){
   var NewInfo;
   NewInfo = req.body;
 
@@ -64,7 +64,7 @@ router.post('/userinfo', function(req, res){
     if (err) {
       res.send(err)
     } 
-    else User_info.update(NewInfo, function() {res.send({success: true, type: "회원정보 수정"})});
+    else user.updateOne(NewInfo, function() {res.send({success: true, type: "회원정보 수정"})});
   })
   
 })

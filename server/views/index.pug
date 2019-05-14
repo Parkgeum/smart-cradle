@@ -1,5 +1,8 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+html
+  body
+    form(action="/boards/upload" enctype="multipart/form-data" method="post")
+      | 제목 : 
+      input(type="text" name="title")
+      |     파일 : 
+      input(type="file" name="myFile")
+      button(type="submit") 업로드
