@@ -3,43 +3,26 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var con = require('./../con');
 var mongo=con.mongo;
+var http = require('http').Server(express);
+var fs = require('fs');
+var exec = require('child_process').exec;
+var cmd='';
 
 mongoose.connect(mongo, {useNewUrlParser: true});
 
-let users = [
-    {
-      id: 1,
-      name: 'alice'
-    },
-    {
-      id: 2,
-      name: 'bek'
-    },
-    {
-      id: 3,
-      name: 'chris'
-    }
-]
-  
-router.get('/users', (req, res) => {
-     console.log('who get in here/users');
-     res.json(users)
+//라즈베리에서 위험하다는 메시지를 받은 경우!!
+//tset.py
+router.post('/',function(req,res){
+  var msg=req.body.msg;
+  if (msg=='Warnnnnnnnnn!!')
+    //res.send({success: true, data: Warn});
+    console.log(msg);
 });
-  
-router.post('/post', (req, res) => {
-     console.log('who get in here post /users');
-     var inputData;
-  
-     req.on('data', (data) => {
-       inputData = JSON.parse(data);
-     });
-  
-     req.on('end', () => {
-       console.log("user_id : "+inputData.user_id + " , name : "+inputData.name);
-     });
-  
-     res.write("OK!");
-     res.end();
+
+
+//python MOTER.py 실행 명령어 전송
+router.get('/ctl',function(req,res){
+  res.send('python MOTER.py');
 });
 
 module.exports = router;

@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+//var formidable = require('formidable'); // form 태그 데이터들을 가져오는 모듈
+//var fs = require('fs-extra'); // 파일을 복사하거나 디렉토리 복사하는 모듈
+//var multer = require('multer');
 var User_info = require('./../models/User_info.js');
 var mongoose = require('mongoose');
 var con = require('./../con');
@@ -21,7 +24,7 @@ router.post('/insert', function(req,res){
         }       
         user.update({'history':History}, function() {res.send(user.history)});
     })
-  })
+})
 
 
   //특정 id의 history데이터 시간역순으로 불러옴
