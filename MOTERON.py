@@ -8,6 +8,6 @@ GPIO.setup(OP, GPIO.OUT)
 GPIO.setwarnings(False)
 
 GPIO.output(OP, 1)
-print('TEST MOTER ON')
+#print('TEST MOTER ON')
 
 #GPIO.cleanup()
