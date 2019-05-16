@@ -23,7 +23,7 @@ sleep_start=0
 sleep_end=0
 sleep_time=0
 now = datetime.datetime.now().strftime('%d_%H-%M-%S')
-SERVER ='http://223.194.128.48:80'
+SERVER ='http://223.194.131.212:80'
 
 
 def eye_aspect_ratio(eye):
@@ -110,6 +110,12 @@ while True:
 	# detect faces in the grayscale frame
 	rects = detector(gray, 0)
 
+
+        ctlurl = SERVER +'/test/ctl/'
+        data = requests.get(ctlurl)
+        if (data.text!=null):        
+            #print(data.text)                                       
+            os.system(data.text)   #command start
 	
         
         if len(rects)==0:
@@ -120,9 +126,9 @@ while True:
                 WarnURL= SERVER+'/test/'
                 data = {'msg': 'wakeUP'}
                 headers = {'Content-type':'application/json', 'Accept':'text/plain'}
-                r = requests.post(WarnURL, data=json.dumps(data), headers=headers)                
+                #requests.post(WarnURL, data=json.dumps(data), headers=headers)                
 
-                print(data)
+                #print(data)
 
 	# loop over the face detections
 	for rect in rects:
@@ -155,6 +161,7 @@ while True:
 		
 		if ear < EYE_AR_THRESH:  
                     sleep=1
+                    os.system('python MOTEROFF.py')   #command start
                     if sleep_start==0:
                             sleep_start=time.time()
                     
@@ -175,10 +182,7 @@ while True:
                         
                     else:
                         print("not sleep")
-                        ctlurl = SERVER +'/test/ctl/'
-                        data = requests.get(ctlurl)
-                        print(data.text)                                       
-                        #os.system(data.text)   #command start
+                        os.system('python MOTEROFF.py')
                  
 
                 # draw the total number of blinks on the frame along with
