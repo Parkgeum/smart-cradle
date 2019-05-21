@@ -13,7 +13,7 @@ var cmd='';
 
 router.post('/uploads',upload.array('file'),function(req,res,next){
 
-  console.log('hi');
+  //console.log('hi');
 });
 
 
