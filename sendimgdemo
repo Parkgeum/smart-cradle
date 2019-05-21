@@ -1,0 +1,9 @@
+import requests
+
+
+url = 'http://223.194.134.64:80/uploads/uploads'  #서버 주소 수정
+files = {'file':open('/home/pi/Image/rnldudnj.jpg','rb')}
+headers = {'Authorization':'Bearer {}',}
+r = requests.post(url,files=files, headers=headers)
+
+print(r)
