@@ -18,8 +18,10 @@ sleep_start=0
 sleep_end=0
 sleep_time=0
 #지금 시간(now)
-now = datetime.datetime.now().strftime('%d_%H-%M-%S')
-
+#now = datetime.datetime.now().strftime('%d_%H-%M-%S')
+#post image
+url = 'http://223.194.134.64:80/uploads/uploads'
+headers = {'Authorization':'Bearer {}',}
 # 눈 비율 계산 
 def eye_aspect_ratio(eye):
 	# 눈 수직길이 계산(A,B)
@@ -66,6 +68,7 @@ args = vars(ap.parse_args())
 # frames the eye must be below the threshold
 EYE_AR_THRESH = 0.3
 EYE_AR_CONSEC_FRAMES = 3
+count=1
  
 
 
@@ -116,7 +119,12 @@ while True:
         if len(rects)==0:
                 time.sleep(5)
                 print('nono')
-                cv2.imwrite('./Image/'+str(now)+'.png',frame)
+                cv2.imwrite('./Image/'+str(count)+'.png',frame)
+		files = {'file':open('/home/pi/Image/'+str(count)+'.png','rb')}
+                #upload img
+		
+		r = requests.post(url,files=files, headers=headers)
+                count=count+1
 
 
                 
