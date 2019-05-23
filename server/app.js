@@ -37,6 +37,7 @@ mongoose.connect(mongo, {useNewUrlParser: true}, (err) => {
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var boardRouter = require('./routes/boards');
+var uploadRouter = require('./routes/uploads');
 var testR = require('./routes/app_and');
 
 var app = express();
@@ -51,6 +52,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('uploads',express.static('uploads'))
 //app.use(express.urlencoded({upload: 'multipart'}));
 //app.use(multer({dest:"./uploads/"}).single('myFile'));
 
@@ -58,6 +60,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/boards', boardRouter);
+app.use('/uploads',uploadRouter);
 app.use('/test', testR);
 
 // catch 404 and forward to error handler
