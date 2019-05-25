@@ -18,7 +18,7 @@ router.post('/',function(req,res, next){
       res.send({success: true, data: stdout})
     })
   } else if (msg=='MOTOROFF') { 
-    exec("python MOTERFF.py", function(err, stdout, stderr){
+    exec("python MOTEROFF.py", function(err, stdout, stderr){
       res.send({success: true, data: stdout})
     })
   }
