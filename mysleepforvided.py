@@ -11,17 +11,27 @@ import dlib
 import cv2
 import datetime
 import threading
+import os
+import sys
+import requests
+import json
 
 
 sleep = 0
 sleep_start=0
 sleep_end=0
 sleep_time=0
+ear=0
 #지금 시간(now)
-#now = datetime.datetime.now().strftime('%d_%H-%M-%S')
-#post image
-url = 'http://223.194.134.64:80/uploads/uploads'
-headers = {'Authorization':'Bearer {}',}
+SERVER ='http://223.194.132.29:80'
+CAMURL ='http://223.194.132.29:8090/?action=stream'
+ControlURL = SERVER + '/ctl'
+IMGURL = SERVER + '/uploadimage'
+
+
+command_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+IMGheaders = {'Authorization':'Bearer {}',}
+
 # 눈 비율 계산 
 def eye_aspect_ratio(eye):
 	# 눈 수직길이 계산(A,B)
@@ -107,29 +117,31 @@ while True:
 	# grab the frame from the threaded video file stream, resize
 	# it, and convert it to grayscale
 	# channels)
-	frame = vs.read()
+	cam = cv2.VideoCapture(CAMURL)
+	ret_val, frame = cam.read()  # 캠 이미지 불러오기
+
 	frame = imutils.resize(frame, width=450)
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
- 
-	#인식된 얼굴의 데이터를 rects에 저장
+
+	# 인식된 얼굴의 데이터를 rects에 저장
 	# detect faces in the grayscale frame
 	rects = detector(gray, 0)
 
-	
-		#인식된 얼굴이 5초동안 없으면 화면 캡쳐
-		if len(rects)==0:
-				time.sleep(5)
-				print('nono')
-				cv2.imwrite('./Image/'+str(count)+'.png',frame)
-		files = {'file':open('/home/pi/Image/'+str(count)+'.png','rb')}
-				#이미지 업로드
-		
-		r = requests.post(url,files=files, headers=headers)
-		time.sleep(2)
-		
-				count=count+1
+	# 인식된 얼굴이 5초동안 없으면 화면 캡쳐
+	if len(rects) == 0:
+		time.sleep(5)
+		print('nono')
+		cv2.imwrite('./Image/' + str(count) + '.png', frame)
 
+		data = {'msg': 'MOTOROFF'}
+		requests.post(ControlURL, data=json.dumps(data), headers=command_headers)
 
+		files = {'file': open('./Image/' + str(count) + '.png', 'rb')}
+		# upload img
+
+		#requests.post(IMGURL, files=files, headers=IMGheaders)
+		#time.sleep(2)
+		count = count + 1
 				
 
 	#인식 상황을 화면에 표시
@@ -161,55 +173,51 @@ while True:
 		# check to see if the eye aspect ratio is below the blink
 		# threshold, and if so, increment the blink frame counter
 
-		#수면 여부 확인
-		#눈을 감고 있을때 수면상태 (sleep =1)로 상태 저장, 수면 시작 함수에 시간 저장
-		if ear < EYE_AR_THRESH:  
-					sleep=1
-					if sleep_start==0:
-							sleep_start=time.time()
-				# 수면 상태일때 (sleep=1)  눈을 뜨면 비수면상태로 저장(sleep=0) 
-		if sleep==1:
-					if ear>EYE_AR_THRESH:
-						sleep=0
-			   #비수면 상태일때(sleep=0)      
-				else:
+		# 수면 여부 확인
+		# 눈을 감고 있을때 수면상태 (sleep =1)로 상태 저장, 수면 시작 함수에 시간 저장
+		if ear < EYE_AR_THRESH:
+			sleep = 1
+
+			if sleep_start == 0:
+				sleep_start = time.time()
+		# 수면 상태일때 (sleep=1)  눈을 뜨면 비수면상태로 저장(sleep=0)
+		if sleep == 1:
+			if ear > EYE_AR_THRESH:
+				sleep = 0
+		# 비수면 상태일때(sleep=0)
+		else:
 			# sleep_start값이 있고 sleep_end가 값이 없으면 sleep_end에 시간 저장 후 수면시간 측정 함수를 불러옴
-					if sleep_start!=0 and sleep_end==0:
-						sleep_end=time.time()
-						sleep_time = caculate_sleep(sleep_start,sleep_end)
+			if sleep_start != 0 and sleep_end == 0:
+				sleep_end = time.time()
+				sleep_time = caculate_sleep(sleep_start, sleep_end)
 
-						#수면시간이 5초 이상이라면 수면했다고 판단 수면시간을 측정하여 print함
-			if sleep_time>5:
-								print("wake up %0.2f"%((sleep_time)))
-						#수면시간이 5초 이하라면 수면 시작,끝 변수를 0으로 초기화 한다.
+				# 수면시간이 5초 이상이라면 수면했다고 판단 수면시간을 측정하여 print함
+				if sleep_time > 5:
+					print("wake up %0.2f" % ((sleep_time)))
+				# 수면시간이 5초 이하라면 수면 시작,끝 변수를 0으로 초기화 한다.
+				else:
+					sleep_start = 0
+					sleep_end = 0
+			# sleep_start함수가 없으면 잠을 자지 않았다고 판단 print한다
 			else:
-								sleep_start=0
-								sleep_end=0
-					#sleep_start함수가 없으면 잠을 자지 않았다고 판단 print한다   
-					else:
-						print("not sleep")
-						
+				print("not sleep")
+				data = {'msg': 'MOTORON'}
+				motor_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+				requests.post(ControlURL, data=json.dumps(data), headers=command_headers)
 
-
-			   
-					   
-				 
-
-				#눈과 귀의 위치 비율을 화면에 나타내는 부분
-		#확인 후 삭제
-		# draw the total number of blinks on the frame along with
+				# 눈과 귀의 위치 비율을 화면에 나타내는 부분
+				# 확인 후 삭제
+				# draw the total number of blinks on the frame along with
 				# the computed eye aspect ratio for the frame
 				cv2.putText(frame, "Blinks: {}".format(EYE_AR_THRESH), (10, 30),
 							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 				cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),
-							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2) 
-	#프레임에 나타냄
-	# show the frame
-	cv2.imshow("Frame", frame)
-	key = cv2.waitKey(1) & 0xFF
+							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+		# 프레임에 나타냄
+		# show the frame
+		cv2.imshow("Frame", frame)
+		key = cv2.waitKey(1) & 0xFF
 
-	
- 
 	# if the `q` key was pressed, break from the loop
 	if key == ord("q"):
 		break
