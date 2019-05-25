@@ -22,7 +22,7 @@ router.post('/',function(req,res){
     var new_file_name = file_name.substring(index + 1);
      
     var new_location = 'uploads/';//저장되는 위치
-    //'uploads/'+name+'/';
+    //'uploads/';
 
     fs.copy(temp_path, new_location + file_name, function(err) { // 이미지 파일 저장하는 부분임
       if (err) {
