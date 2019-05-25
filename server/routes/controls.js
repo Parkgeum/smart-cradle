@@ -27,4 +27,13 @@ router.post('/',function(req,res, next){
 });
 
 
+//위험상황 알림
+router.post('/warn',function(req,res, next){
+  var msg=req.body.msg;
+  if (msg=='Warn') {
+      res.send({success: true, data: 'Warn'})
+    
+  } 
+});
+
 module.exports = router;
