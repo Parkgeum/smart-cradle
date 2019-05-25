@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
-var upload = multer({dest:'uploads/'})
+var uploads = multer({dest:'uploads/'})
 var mongoose = require('mongoose');
 var con = require('./../con');
 var mongo=con.mongo;
@@ -11,7 +11,7 @@ var exec = require('child_process').exec;
 var cmd='';
 
 //uploads라는 파일 미리 만들어야한다
-router.post('/uploads',upload.array('file'),function(req,res,next){
+router.post('/uploads',uploads.array('file'),function(req,res,next){
 
   //console.log('hi');
 });
