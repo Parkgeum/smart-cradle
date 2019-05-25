@@ -4,6 +4,8 @@ var bodyParser = require('body-parser')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+//var multer = require('multer');
+//var formidable = require('formidable');
 var mongoose = require('mongoose');
 var cors = require('cors');
 var con = require('./con');
@@ -35,9 +37,9 @@ mongoose.connect(mongo, {useNewUrlParser: true}, (err) => {
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var boardRouter = require('./routes/boards');
-var uploadRouter = require('./routes/uploads');
-var controlRouter = require('./routes/controls');
-var uploadR = require('./routes/upload')
+var uploadimageR = require('./routes/uploadimage');
+var testR = require('./routes/app_and');
+var uploadsoundR = require('./routes/uploadsound')//upload sound
 
 var app = express();
 
@@ -52,14 +54,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('uploads',express.static('uploads'))
+//app.use(express.urlencoded({upload: 'multipart'}));
+//app.use(multer({dest:"./uploads/"}).single('myFile'));
 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/boards', boardRouter);
-app.use('/uploads',uploadRouter);
-app.use('/ctl', controlRouter);
-app.use('/upload', uploadR);//upload sound post
+app.use('/uploadimage',uploadimageR);
+app.use('/test', testR);
+app.use('/uploadsound', uploadsoundR);//upload sound post
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
