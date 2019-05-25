@@ -69,4 +69,20 @@ router.post('/editinfo', function(req, res){
   
 })
 
+//main fragment의 이미지 저장
+router.post('/userimg', function(req, res, next) {
+  //var login_id = req.body.id;
+
+  var path = req.body.path;
+  
+  User_info.findOne({'id': req.body.id}, function(err, user){
+    if (err) {
+      console.err(err);
+      throw err;
+    }       
+    user.update({'imgpath':path}, function() {res.send({success: true, type: "경로 등록"})});
+  })
+  
+});
+
 module.exports = router;
