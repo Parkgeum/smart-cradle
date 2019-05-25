@@ -20,15 +20,9 @@ sleep_time=0
 #지금 시간(now)
 #now = datetime.datetime.now().strftime('%d_%H-%M-%S')
 #post image
-
-WarnURL = SERVER + '/ctl'
-
-imgURL = SERVER + '/uploads/uploads'
-img_headers = {'Authorization':'Bearer {}',}
-command_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-
-
-# 눈 비율 계산
+url = 'http://223.194.134.64:80/uploads/uploads'
+headers = {'Authorization':'Bearer {}',}
+# 눈 비율 계산 
 def eye_aspect_ratio(eye):
 	# 눈 수직길이 계산(A,B)
 	# compute the euclidean distances between the two sets of
@@ -36,11 +30,11 @@ def eye_aspect_ratio(eye):
 	A = dist.euclidean(eye[1], eye[5])
 	B = dist.euclidean(eye[2], eye[4])
 	
- 	# 눈 수평거리 계산(C)
+	# 눈 수평거리 계산(C)
 	# compute the euclidean distance between the horizontal
 	# eye landmark (x, y)-coordinates
 	C = dist.euclidean(eye[0], eye[3])
- 	#눈 수직/수평 거리의 비율(ear)
+	#눈 수직/수평 거리의 비율(ear)
 	# compute the eye aspect ratio
 	ear = (A + B) / (2.0 * C)
  
@@ -50,15 +44,15 @@ def eye_aspect_ratio(eye):
 # 수면시간 측정
 def caculate_sleep(start,end):
 
-    start_time = start
-    end_time = end
+	start_time = start
+	end_time = end
 	
-    sleep_time = end_time-start_time
-    sleep_time = round(sleep_time)
+	sleep_time = end_time-start_time
+	sleep_time = round(sleep_time)
 
-    return sleep_time
+	return sleep_time
 
-    
+	
 
 #파씽해주는 부분
 #코드내 사용자의 요구에 따라 적절히 파씽하여 오류를 줄인다
@@ -122,25 +116,21 @@ while True:
 	rects = detector(gray, 0)
 
 	
-        #인식된 얼굴이 5초동안 없으면 화면 캡쳐
-        if len(rects)==0:
-                time.sleep(5)
-                print('nono')
-                cv2.imwrite('./Image/'+str(count)+'.png',frame)
-
-				data = {'msg': 'MOTOROFF'}
-				requests.post(WarnURL, data=json.dumps(data), headers=command_headers)
-
-				files = {'file': open('./Image/' + str(count) + '.png', 'rb')}
-	# upload img
-
-		headers = {'Authorization': 'Bearer {}', }
-		requests.post(imgURL, files=files, headers=img_headers)
+		#인식된 얼굴이 5초동안 없으면 화면 캡쳐
+		if len(rects)==0:
+				time.sleep(5)
+				print('nono')
+				cv2.imwrite('./Image/'+str(count)+'.png',frame)
+		files = {'file':open('/home/pi/Image/'+str(count)+'.png','rb')}
+				#이미지 업로드
+		
+		r = requests.post(url,files=files, headers=headers)
 		time.sleep(2)
-		count = count + 1
+		
+				count=count+1
 
 
-                
+				
 
 	#인식 상황을 화면에 표시
 	# loop over the face detections
@@ -174,47 +164,45 @@ while True:
 		#수면 여부 확인
 		#눈을 감고 있을때 수면상태 (sleep =1)로 상태 저장, 수면 시작 함수에 시간 저장
 		if ear < EYE_AR_THRESH:  
-                    sleep=1
-                    if sleep_start==0:
-                            sleep_start=time.time()
-                # 수면 상태일때 (sleep=1)  눈을 뜨면 비수면상태로 저장(sleep=0) 
+					sleep=1
+					if sleep_start==0:
+							sleep_start=time.time()
+				# 수면 상태일때 (sleep=1)  눈을 뜨면 비수면상태로 저장(sleep=0) 
 		if sleep==1:
-                    if ear>EYE_AR_THRESH:
-                        sleep=0
-               #비수면 상태일때(sleep=0)      
-                else:
+					if ear>EYE_AR_THRESH:
+						sleep=0
+			   #비수면 상태일때(sleep=0)      
+				else:
 			# sleep_start값이 있고 sleep_end가 값이 없으면 sleep_end에 시간 저장 후 수면시간 측정 함수를 불러옴
-                    if sleep_start!=0 and sleep_end==0:
-                        sleep_end=time.time()
-                        sleep_time = caculate_sleep(sleep_start,sleep_end)
+					if sleep_start!=0 and sleep_end==0:
+						sleep_end=time.time()
+						sleep_time = caculate_sleep(sleep_start,sleep_end)
 
-                        #수면시간이 5초 이상이라면 수면했다고 판단 수면시간을 측정하여 print함
+						#수면시간이 5초 이상이라면 수면했다고 판단 수면시간을 측정하여 print함
 			if sleep_time>5:
-                                print("wake up %0.2f"%((sleep_time)))
-								data = {'sleep': sleep_time}
-								requests.post(WarnURL, data=json.dumps(data), headers=command_headers)
-                        #수면시간이 5초 이하라면 수면 시작,끝 변수를 0으로 초기화 한다.
+								print("wake up %0.2f"%((sleep_time)))
+						#수면시간이 5초 이하라면 수면 시작,끝 변수를 0으로 초기화 한다.
 			else:
-                                sleep_start=0
-                                sleep_end=0
-                    #sleep_start함수가 없으면 잠을 자지 않았다고 판단 print한다   
-                    else:
-                        print("not sleep")
-                        
+								sleep_start=0
+								sleep_end=0
+					#sleep_start함수가 없으면 잠을 자지 않았다고 판단 print한다   
+					else:
+						print("not sleep")
+						
 
 
-               
-                       
-                 
+			   
+					   
+				 
 
-                #눈과 귀의 위치 비율을 화면에 나타내는 부분
+				#눈과 귀의 위치 비율을 화면에 나타내는 부분
 		#확인 후 삭제
 		# draw the total number of blinks on the frame along with
-                # the computed eye aspect ratio for the frame
-                cv2.putText(frame, "Blinks: {}".format(EYE_AR_THRESH), (10, 30),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-                cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2) 
+				# the computed eye aspect ratio for the frame
+				cv2.putText(frame, "Blinks: {}".format(EYE_AR_THRESH), (10, 30),
+							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+				cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),
+							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2) 
 	#프레임에 나타냄
 	# show the frame
 	cv2.imshow("Frame", frame)
