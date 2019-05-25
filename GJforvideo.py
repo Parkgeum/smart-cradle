@@ -52,7 +52,7 @@ def caculate_sleep(start,end):
     start_time = start
     end_time = end
     sleep_time = end_time-start_time
-    
+    sleep_time = round(sleep_time)
 
     return sleep_time
 
