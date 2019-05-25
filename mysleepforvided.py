@@ -20,9 +20,15 @@ sleep_time=0
 #지금 시간(now)
 #now = datetime.datetime.now().strftime('%d_%H-%M-%S')
 #post image
-url = 'http://223.194.134.64:80/uploads/uploads'
-headers = {'Authorization':'Bearer {}',}
-# 눈 비율 계산 
+
+WarnURL = SERVER + '/ctl'
+
+imgURL = SERVER + '/uploads/uploads'
+img_headers = {'Authorization':'Bearer {}',}
+command_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+
+
+# 눈 비율 계산
 def eye_aspect_ratio(eye):
 	# 눈 수직길이 계산(A,B)
 	# compute the euclidean distances between the two sets of
@@ -121,13 +127,17 @@ while True:
                 time.sleep(5)
                 print('nono')
                 cv2.imwrite('./Image/'+str(count)+'.png',frame)
-		files = {'file':open('/home/pi/Image/'+str(count)+'.png','rb')}
-                #이미지 업로드
-		
-		r = requests.post(url,files=files, headers=headers)
+
+				data = {'msg': 'MOTOROFF'}
+				requests.post(WarnURL, data=json.dumps(data), headers=command_headers)
+
+				files = {'file': open('./Image/' + str(count) + '.png', 'rb')}
+	# upload img
+
+		headers = {'Authorization': 'Bearer {}', }
+		requests.post(imgURL, files=files, headers=img_headers)
 		time.sleep(2)
-		
-                count=count+1
+		count = count + 1
 
 
                 
@@ -181,6 +191,8 @@ while True:
                         #수면시간이 5초 이상이라면 수면했다고 판단 수면시간을 측정하여 print함
 			if sleep_time>5:
                                 print("wake up %0.2f"%((sleep_time)))
+								data = {'sleep': sleep_time}
+								requests.post(WarnURL, data=json.dumps(data), headers=command_headers)
                         #수면시간이 5초 이하라면 수면 시작,끝 변수를 0으로 초기화 한다.
 			else:
                                 sleep_start=0

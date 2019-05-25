@@ -38,7 +38,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var boardRouter = require('./routes/boards');
 var uploadimageR = require('./routes/uploadimage');
-var testR = require('./routes/app_and');
+var controlRouter = require('./routes/controls');
 var uploadsoundR = require('./routes/uploadsound')//upload sound
 
 var app = express();
@@ -62,7 +62,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/boards', boardRouter);
 app.use('/uploadimage',uploadimageR);
-app.use('/test', testR);
+app.use('/ctl', controlRouter);
 app.use('/uploadsound', uploadsoundR);//upload sound post
 
 // catch 404 and forward to error handler
