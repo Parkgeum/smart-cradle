@@ -52,7 +52,7 @@ def caculate_sleep(start,end):
     start_time = start
     end_time = end
     sleep_time = end_time-start_time
-    
+    sleep_time = round(sleep_time)
 
     return sleep_time
 
@@ -96,6 +96,12 @@ print("[INFO] starting video stream thread...")
 vs = VideoStream(usePiCamera=args["picamera"] > 0).start()
 fileStream = False
 time.sleep(1.0)
+
+#CRYINGON
+WarnURL = SERVER + '/cry'
+data = {'msg': 'CRYON'}
+headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+requests.post(WarnURL, data=json.dumps(data), headers=headers)
 
 #스트리밍 화면에서 얼굴 인식및 화면 표시 무한 루프
 # loop over frames from the video stream

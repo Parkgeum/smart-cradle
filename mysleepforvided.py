@@ -46,8 +46,9 @@ def caculate_sleep(start,end):
 
     start_time = start
     end_time = end
+	
     sleep_time = end_time-start_time
-    
+    sleep_time = round(sleep_time)
 
     return sleep_time
 
@@ -121,9 +122,11 @@ while True:
                 print('nono')
                 cv2.imwrite('./Image/'+str(count)+'.png',frame)
 		files = {'file':open('/home/pi/Image/'+str(count)+'.png','rb')}
-                #upload img
+                #이미지 업로드
 		
 		r = requests.post(url,files=files, headers=headers)
+		time.sleep(2)
+		
                 count=count+1
 
 
