@@ -104,6 +104,10 @@ vs = VideoStream(usePiCamera=args["picamera"] > 0).start()
 fileStream = False
 time.sleep(1.0)
 
+#crydetect start
+url_cry = url+'/cry'
+r = requests.post(url_cry, headers=command_headers)
+
 #스트리밍 화면에서 얼굴 인식및 화면 표시 무한 루프
 # loop over frames from the video stream
 while True:
