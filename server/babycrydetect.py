@@ -10,9 +10,6 @@ import matplotlib.pyplot as plt
 from detect_peaks import detect_peaks
 from threading import Thread
 
-import requests
-import json
-
 #모터
 import RPi.GPIO as GPIO
 OP = 21
