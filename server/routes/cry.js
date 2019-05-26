@@ -14,20 +14,21 @@ var cmd='';
 router.post('/',function(req,res,next){
     var {PythonShell} = require('python-shell');
 
-var options = {
-    mode:'text',
-    pythonPath:'',
-    pythonOption:['-u'],
-    scriptPath:'/home/pi/Downloads/smart-cradle-master/server/',
-    //args:['python']
+    var options = {
+        mode:'text',
+        pythonPath:'',
+        pythonOption:['-u'],
+        scriptPath:'/home/pi/Downloads/smart-cradle-master/server/',
+        //args:['python']
     };
 
 
 
-PythonShell.run('testsoundpwmmotor.py',options,function(err,results){
-    if(err) throw err;
-    res.send();
-    //console.log('hi %j',results);});
+    PythonShell.run('testsoundpwmmotor.py',options,function(err,results){
+        if(err) throw err;
+        res.send();
+        //console.log('hi %j',results);
+    });
 });
 
 module.exports = router;

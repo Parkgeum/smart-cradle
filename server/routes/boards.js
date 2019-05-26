@@ -7,22 +7,21 @@ var User_info = require('./../models/User_info.js');
 var mongoose = require('mongoose');
 var con = require('./../con');
 var mongo=con.mongo;
-
 mongoose.connect(mongo, {useNewUrlParser: true});
 
 
 //임시 데이터 입력 >> 나중에 서버에서 불러오도록 수정해야 함
 router.post('/insert', function(req,res){
-    var history = req.body.history;
+  var history = req.body.history;
   
-    User_info.findOne({'id': req.body.id}, function(err, user){
-        var History = user.history;
-        History.push(history);
-        if (err) {
-          console.err(err);
-          throw err;
-        }       
-        user.update({'history':History}, function() {res.send(user.history)});
+  User_info.findOne({'id': req.body.id}, function(err, user){
+    var History = user.history;
+    History.push(history);
+    if (err) {
+      console.err(err);
+      throw err;
+    }       
+    user.update({'history':History}, function() {res.send(user.history)});
     })
 })
 
@@ -39,7 +38,7 @@ router.post('/', function(req, res, next) {
       })
 });
 
-  //사용자 기본 정보 로드 (history 제외) 
+//사용자 기본 정보 로드 (history 제외) 
 router.post('/getinfo', function(req, res, next) {
   var login_id = req.body.id;
   var findLocalUser = {
@@ -53,6 +52,26 @@ router.post('/getinfo', function(req, res, next) {
       res.send({success:true, data:user});
     }
   })
+});
+
+router.post('/sleep',function(req,res){
+  var history = req.body.sleep;
+  var localuser = req.body.local;
+  User_info.findOne({'id': localuser}, function(err, user){
+    
+    if (user.history=='No History') {
+      user.history=history;
+    } else { 
+      var History = user.history;
+      History.push(history);
+    }
+    if (err) {
+      console.err(err);
+      throw err;
+    }      
+    user.update({'history':History}, function() {res.send(user.history)});
+    
+    })
 });
 
 module.exports = router;

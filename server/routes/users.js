@@ -23,6 +23,7 @@ router.post('/join', function(req,res){
   join.Byear = req.body.Byear;
   join.Bmonth = req.body.Bmonth;
   join.Bday = req.body.Bday;
+  join.server = con.server;
 
   User_info.findOne({'id': req.body.id}, function(err, user){
     if (err) {

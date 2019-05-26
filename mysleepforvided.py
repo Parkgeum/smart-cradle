@@ -27,11 +27,13 @@ SERVER ='http://223.194.132.29:80'
 CAMURL ='http://223.194.132.29:8090/?action=stream'
 ControlURL = SERVER + '/ctl'
 IMGURL = SERVER + '/uploadimage'
-
+SleepURL = SERVER +'/boards/sleep'
 
 command_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 IMGheaders = {'Authorization':'Bearer {}',}
 
+data = {'msg': SERVER}
+local = requests.post(SERVER, data=json.dumps(data), headers=command_headers)
 
 def eye_aspect_ratio(eye):
     
@@ -102,8 +104,8 @@ vs = VideoStream(usePiCamera=args["picamera"] > 0).start()
 fileStream = False
 time.sleep(1.0)
 url_cry = SERVER+'/cry'
-data = {'msg': 'CRYON'}
-r = requests.post(url_cry,data=json.dumps(data), headers=command_headers)
+cry_data = {'msg': 'CRYON'}
+requests.post(url_cry,data=json.dumps(cry_data), headers=command_headers)
 time.sleep(1)
 
 # loop over frames from the video stream
@@ -134,13 +136,13 @@ while True:
         print('nono')
         cv2.imwrite('./Image/' + str(count) + '.png', frame)
 
-        data = {'msg': 'MOTOROFF'}
-        requests.post(ControlURL, data=json.dumps(data), headers=command_headers)
+        motor_on = {'msg': 'MOTOROFF'}
+        requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
 
         files = {'file': open('./Image/' + str(count) + '.png', 'rb')}
         # upload img
 
-        r = requests.post(IMGURL, files=files, headers=IMGheaders)
+        requests.post(IMGURL, files=files, headers=IMGheaders)
         time.sleep(2)
         count = count + 1
                 
@@ -194,6 +196,8 @@ while True:
                 
                 if sleep_time > 5:
                     print("wake up %0.2f" % ((sleep_time)))
+                    sleep_data = {'local': local, sleep: sleep_time}
+                    requests.post(SleepURL, data=json.dumps(sleep_data), headers=command_headers)
                 
                 else:
                     sleep_start = 0
@@ -201,9 +205,8 @@ while True:
             
             else:
                 print("not sleep")
-                data = {'msg': 'MOTORON'}
-                motor_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-                requests.post(ControlURL, data=json.dumps(data), headers=command_headers)
+                motor_on = {'msg': 'MOTORON'}
+                requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
 
                 
                 # draw the total number of blinks on the frame along with
@@ -214,8 +217,8 @@ while True:
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
         
         # show the frame
-        cv2.imshow("Frame", frame)
-        key = cv2.waitKey(1) & 0xFF
+    cv2.imshow("Frame", frame)
+    key = cv2.waitKey(1) & 0xFF
 
     # if the `q` key was pressed, break from the loop
     if key == ord("q"):

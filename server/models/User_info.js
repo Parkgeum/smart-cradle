@@ -27,7 +27,7 @@ var User_info = new mongoose.Schema({
 
     history: [String],
     imgpath: String,
-
+    server: String
 });
 
 module.exports = mongoose.model('User_info',User_info);
