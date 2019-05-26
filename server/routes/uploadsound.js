@@ -21,10 +21,10 @@ router.post('/',function(req,res){
     var index = file_name.indexOf('/'); 
     var new_file_name = file_name.substring(index + 1);
      
-    var new_location = 'uploadsound/';//저장되는 위치
+    //var new_location = 'uploadsound/';//저장되는 위치
     //'uploads/';
 
-    fs.copy(temp_path, new_location + file_name, function(err) { // 이미지 파일 저장하는 부분임
+    fs.copy(temp_path, file_name, function(err) { // 이미지 파일 저장하는 부분임
       if (err) {
         console.error(err);
 
@@ -32,7 +32,7 @@ router.post('/',function(req,res){
       }
       else{      
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({ result : "success", url : new_location+file_name }, null, 3));
+        res.send(JSON.stringify({ result : "success", url : file_name }, null, 3));
 
         console.log("upload success!");
       }

@@ -25,7 +25,11 @@ var User_info = new mongoose.Schema({
     Bmonth: String,
     Bday: String,
 
-    history: [String],
+    history: [{
+      date: String,
+      sleep: String,
+      img_path: String  
+    }],
     imgpath: String,
     server: String
 });

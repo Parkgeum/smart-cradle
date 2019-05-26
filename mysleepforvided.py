@@ -23,6 +23,7 @@ sleep_end=0
 sleep_time=0
 ear=0
 
+now = datetime.datetime.now().strftime('%d_%H-%M-%S')
 SERVER ='http://223.194.132.29:80'
 CAMURL ='http://223.194.132.29:8090/?action=stream'
 ControlURL = SERVER + '/ctl'
@@ -33,7 +34,7 @@ command_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 IMGheaders = {'Authorization':'Bearer {}',}
 
 data = {'msg': SERVER}
-local = requests.post(SERVER, data=json.dumps(data), headers=command_headers)
+local = requests.post(SERVER, data=json.dumps(data), headers=command_headers).text
 
 def eye_aspect_ratio(eye):
     
@@ -196,7 +197,7 @@ while True:
                 
                 if sleep_time > 5:
                     print("wake up %0.2f" % ((sleep_time)))
-                    sleep_data = {'local': local, sleep: sleep_time}
+                    sleep_data = {'local': local, 'sleep': sleep_time, 'date':now}
                     requests.post(SleepURL, data=json.dumps(sleep_data), headers=command_headers)
                 
                 else:

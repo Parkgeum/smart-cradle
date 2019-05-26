@@ -57,19 +57,22 @@ router.post('/getinfo', function(req, res, next) {
 router.post('/sleep',function(req,res){
   var history = req.body.sleep;
   var localuser = req.body.local;
+  var date = req.body.date;
+  var new_data = {
+    date: date,
+    sleep: history,
+    img_path: null
+  }
   User_info.findOne({'id': localuser}, function(err, user){
     
-    if (user.history=='No History') {
-      user.history=history;
-    } else { 
-      var History = user.history;
-      History.push(history);
-    }
+    var History = user.history;
+    History.push(new_data);
+    
     if (err) {
       console.err(err);
       throw err;
     }      
-    user.update({'history':History}, function() {res.send(user.history)});
+    user.update({'history':History}, function() {res.send(History)});
     
     })
 });
