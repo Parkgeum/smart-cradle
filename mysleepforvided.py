@@ -137,8 +137,8 @@ while True:
         print('nono')
         cv2.imwrite('./Image/' + str(count) + '.png', frame)
 
-        motor_on = {'msg': 'MOTOROFF'}
-        requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
+        #motor_on = {'msg': 'MOTOROFF'}
+        #requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
 
         files = {'file': open('./Image/' + str(count) + '.png', 'rb')}
         # upload img
@@ -183,6 +183,9 @@ while True:
 
             if sleep_start == 0:
                 sleep_start = time.time()
+                #내생각에는 모터 off를 여기서 해야할듯 여기가 잠자기 시작하는 부분이니깐쓰
+                motor_on = {'msg': 'MOTOROFF'}
+                requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
        
         if sleep == 1:
             if ear > EYE_AR_THRESH:
