@@ -12,6 +12,7 @@ var cmd='';
 
 //uploads라는 파일 미리 만들어야한다
 router.post('/',uploads.array('file'),function(req,res,next){
+  res.send();
 
   //console.log('hi');
 });
