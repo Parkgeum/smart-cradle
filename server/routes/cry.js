@@ -24,7 +24,7 @@ var options = {
 
 
 
-PythonShell.run('test.py',options,function(err,results){
+PythonShell.run('testsoundpwmmotor.py',options,function(err,results){
     if(err) throw err;
     res.send();
     //console.log('hi %j',results);});
