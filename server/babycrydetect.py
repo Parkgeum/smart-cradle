@@ -10,15 +10,19 @@ import matplotlib.pyplot as plt
 from detect_peaks import detect_peaks
 from threading import Thread
 
-import requests
-import json
+#모터
+import RPi.GPIO as GPIO
+OP = 21
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(OP,GPIO.OUT)
+
 
 MinDetect = 50
 chunk = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-RECORD_SECONDS = 10
+RECORD_SECONDS = 3
 
 p = pyaudio.PyAudio()
 window = 150
@@ -29,7 +33,7 @@ ffs=[0]
 amp=[0]
 
 pygame.mixer.init()
-pygame.mixer.music.load("record.mp3") #파일 경로 넣어주기
+pygame.mixer.music.load("./uploadsound/record.mp3") #파일 경로 넣어주기
 
 def Pitch(signal):
     signal = np.fromstring(signal, 'Int16')
@@ -83,17 +87,18 @@ def detecting():
                   #      babyDidCry = True
                     #endFrame = i + 1500
                     print ("baby crying")
-
+                    GPIO.output(OP,1)#motor start
                     pygame.mixer.music.play()
                     time.sleep(5)
                 
                 else:
                     print ("noise")
                     pygame.mixer.music.stop()
+                    GPIO.output(OP,0)#motor stop
 
             else:
                 print ("noise")
                 pygame.mixer.music.stop()
+                GPIO.output(OP,0)#motor stop
   
 detecting()
-   
