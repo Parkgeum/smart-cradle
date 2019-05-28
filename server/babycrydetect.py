@@ -10,6 +10,12 @@ import matplotlib.pyplot as plt
 from detect_peaks import detect_peaks
 from threading import Thread
 
+import RPi.GPIO as GPIO
+OP=21
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(OP,GPIO.OUT)
+
+
 MinDetect = 50
 chunk = 1024
 FORMAT = pyaudio.paInt16
@@ -75,22 +81,23 @@ def detecting():
                     stdPeak = 0
                 print ( avgPeakResult, stdPeak,averageAmp, len(peaks))
                 if len(peaks)>=4 :
-                #if np.average(avgPeak) <= 2500 and np.std(avgPeak) <200 and averageAmp >20 and len(peaks)>=3 and len(peaks) <14:
-                  #  if babyDidCry == False:
-                  #      babyDidCry = True
                     endFrame = i + 1500
                     print ("baby crying")                                                                                                                                                                                                                              
                     pygame.mixer.music.play()
+                    GPIO.output(OP,1)
                     time.sleep(5)
                     #duty=20
                 
                 else:
                     print ("noise")
                     pygame.mixer.music.stop()
+                    GPIO.output(OP,0)
                     
             else:
                 print ("noise")
+                GPIO.output(OP,0)
                 pygame.mixer.music.stop()
                 
 detecting()
+
 
