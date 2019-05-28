@@ -32,3 +32,9 @@ python GJforvideo.py --shape-predictor shape_predictor_68_face_landmarks.dat
 > #### GJforvideo.py에서 수정
 > * SERVER=라즈베리파이 서버 ip
 > * cam = VideoCapture('http://라즈베리파이서버ip:8090/?action=stream')
+
+
+이미지 파일 접근
+-----------
++ ### 이미지 저장할 폴더 미리 생성해야함(uploads)
+http://url/uploads/이미지이름
