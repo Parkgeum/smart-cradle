@@ -85,7 +85,7 @@ def detecting():
                     print ("baby crying")                                                                                                                                                                                                                              
                     pygame.mixer.music.play()
                     GPIO.output(OP,1)
-                    time.sleep(5)
+                    time.sleep(6)
                     #duty=20
                 
                 else:
