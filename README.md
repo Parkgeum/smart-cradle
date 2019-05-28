@@ -39,8 +39,8 @@ python GJforvideo.py --shape-predictor shape_predictor_68_face_landmarks.dat
 ### 이미지 저장할 폴더 미리 생성해야함(uploads)
 http://url/uploads/이미지이름
 
-###imageupload.js 깔아야하는 모듈
+### imageupload.js 깔아야하는 모듈
 
-npm install moment
-npm install moment-timezone
-npm install multer or npm install --save multer
+> npm install moment
+> npm install moment-timezone
+> npm install multer or npm install --save multer
