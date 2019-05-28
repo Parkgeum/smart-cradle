@@ -54,7 +54,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('uploads',express.static('uploads'))
+app.use('/uploads',express.static('uploads'))
 //app.use(express.urlencoded({upload: 'multipart'}));
 //app.use(multer({dest:"./uploads/"}).single('myFile'));
 
