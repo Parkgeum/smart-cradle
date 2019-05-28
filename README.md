@@ -41,6 +41,6 @@ http://url/uploads/이미지이름
 
 ### imageupload.js 깔아야하는 모듈
 
-> npm install moment
-> * npm install moment-timezone
-> * npm install multer or npm install --save multer
+ * npm install moment
+ * npm install moment-timezone
+ * npm install multer or npm install --save multer
