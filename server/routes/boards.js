@@ -33,7 +33,7 @@ router.post('/', function(req, res, next) {
           res.send(err);
         } 
         else { 
-            res.send(user.history.reverse())
+            res.send({success:true, data:user.history.reverse()})
         }
       })
 });
