@@ -3,7 +3,7 @@ var router = express.Router();
 var multer = require('multer');
 //var uploads = multer({dest:'uploads/'})
 
-var Imageupload = require('./../models/Imageupload.js');
+//var Imageupload = require('./../models/Imageupload.js');
 var mongoose = require('mongoose');
 var con = require('./../con');
 var mongo=con.mongo;
