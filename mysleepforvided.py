@@ -22,14 +22,14 @@ sleep_start=0
 sleep_end=0
 sleep_time=0
 ear=0
+#issleep=0
 
-now = datetime.datetime.now().strftime('%d_%H-%M-%S')
-SERVER ='http://223.194.132.29:80'
-CAMURL ='http://223.194.132.29:8090/?action=stream'
+SERVER ='http://223.194.134.116:80'
+CAMURL ='http://223.194.134.116:8090/?action=stream'
 ControlURL = SERVER + '/ctl'
 IMGURL = SERVER + '/uploadimage'
 SleepURL = SERVER +'/boards/sleep'
-
+PathURL = SERVER + '/uploadimage/path'
 command_headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 IMGheaders = {'Authorization':'Bearer {}',}
 
@@ -106,7 +106,9 @@ fileStream = False
 time.sleep(1.0)
 url_cry = SERVER+'/cry'
 cry_data = {'msg': 'CRYON'}
-requests.post(url_cry,data=json.dumps(cry_data), headers=command_headers)
+
+#requests.post(url_cry, headers=command_headers)
+#requests.post(url_cry,data=json.dumps(cry_data), headers=command_headers)
 time.sleep(1)
 
 # loop over frames from the video stream
@@ -135,20 +137,24 @@ while True:
     if len(rects) == 0:
         time.sleep(5)
         print('nono')
-        cv2.imwrite('./Image/' + str(count) + '.png', frame)
+        motor_off = {'msg': 'MOTOROFF'}
+        requests.post(ControlURL, data=json.dumps(motor_off), headers=command_headers)
 
-        #motor_on = {'msg': 'MOTOROFF'}
-        #requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
+        cv2.imwrite('./Image/' + str(count) + '.png', frame)
 
         files = {'file': open('./Image/' + str(count) + '.png', 'rb')}
         # upload img
 
         requests.post(IMGURL, files=files, headers=IMGheaders)
         time.sleep(2)
+        now = datetime.datetime.now().strftime('%m/%d_%H:%M:%S')
+        path = '/uploads/'+str(count)+'.png'
+        path_data = {'local': local, 'date':now,'path': path}
+        requests.post(PathURL, data=json.dumps(path_data), headers=command_headers)
+        time.sleep(2)
         count = count + 1
-                
 
-    
+
     # loop over the face detections
     for rect in rects:
         # determine the facial landmarks for the face region, then
@@ -183,16 +189,24 @@ while True:
 
             if sleep_start == 0:
                 sleep_start = time.time()
-                #내생각에는 모터 off를 여기서 해야할듯 여기가 잠자기 시작하는 부분이니깐쓰
-                motor_on = {'msg': 'MOTOROFF'}
-                requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
        
         if sleep == 1:
+           # if issleep<2:
+            sleep_mi = time.time()
+            issleep = caculate_sleep(sleep_start,sleep_mi)
+            if issleep>2:
+                print('sleeping')
+                motor_off = {'msg': 'MOTOROFF'}
+                requests.post(ControlURL, data=json.dumps(motor_off), headers=command_headers)
+                sleep_mi = 0
+
+
+
             if ear > EYE_AR_THRESH:
                 sleep = 0
         # sleep=0
         else:
-            
+
             if sleep_start != 0 and sleep_end == 0:
                 sleep_end = time.time()
                 sleep_time = caculate_sleep(sleep_start, sleep_end)
@@ -200,6 +214,7 @@ while True:
                 
                 if sleep_time > 5:
                     print("wake up %0.2f" % ((sleep_time)))
+                    now = datetime.datetime.now().strftime('%m/%d_%H:%M:%S')
                     sleep_data = {'local': local, 'sleep': sleep_time, 'date':now}
                     requests.post(SleepURL, data=json.dumps(sleep_data), headers=command_headers)
                     sleep_start=0
