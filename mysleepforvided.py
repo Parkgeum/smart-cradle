@@ -202,6 +202,8 @@ while True:
                     print("wake up %0.2f" % ((sleep_time)))
                     sleep_data = {'local': local, 'sleep': sleep_time, 'date':now}
                     requests.post(SleepURL, data=json.dumps(sleep_data), headers=command_headers)
+                    sleep_start=0
+                    sleep_end=0
                 
                 else:
                     sleep_start = 0
