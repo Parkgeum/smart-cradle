@@ -24,8 +24,8 @@ sleep_time=0
 ear=0
 #issleep=0
 
-SERVER ='http://223.194.134.116:80'
-CAMURL ='http://223.194.134.116:8090/?action=stream'
+SERVER ='http://192.168.0.9:80'
+CAMURL ='http://192.168.0.9:8090/?action=stream'
 ControlURL = SERVER + '/ctl'
 IMGURL = SERVER + '/uploadimage'
 SleepURL = SERVER +'/boards/sleep'
@@ -120,9 +120,7 @@ while True:
         break
  
     
-    # grab the frame from the threaded video file stream, resize
-    # it, and convert it to grayscale
-    # channels)
+    # CAMURL =SERVER+':8090/?action=stream'
     cam = cv2.VideoCapture(CAMURL)
     ret_val, frame = cam.read()  
 
@@ -137,14 +135,11 @@ while True:
     if len(rects) == 0:
         time.sleep(5)
         print('nono')
-        motor_off = {'msg': 'MOTOROFF'}
-        requests.post(ControlURL, data=json.dumps(motor_off), headers=command_headers)
 
         cv2.imwrite('./Image/' + str(count) + '.png', frame)
 
         files = {'file': open('./Image/' + str(count) + '.png', 'rb')}
         # upload img
-
         requests.post(IMGURL, files=files, headers=IMGheaders)
         time.sleep(2)
         now = datetime.datetime.now().strftime('%m/%d_%H:%M:%S')
@@ -196,8 +191,8 @@ while True:
             issleep = caculate_sleep(sleep_start,sleep_mi)
             if issleep>2:
                 print('sleeping')
-                motor_off = {'msg': 'MOTOROFF'}
-                requests.post(ControlURL, data=json.dumps(motor_off), headers=command_headers)
+                #motor_off = {'msg': 'MOTOROFF'}
+                #requests.post(ControlURL, data=json.dumps(motor_off), headers=command_headers)
                 sleep_mi = 0
 
 
@@ -226,8 +221,8 @@ while True:
             
             else:
                 print("not sleep")
-                motor_on = {'msg': 'MOTORON'}
-                requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
+                #motor_on = {'msg': 'MOTORON'}
+                #requests.post(ControlURL, data=json.dumps(motor_on), headers=command_headers)
 
                 
                 # draw the total number of blinks on the frame along with

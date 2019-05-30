@@ -21,14 +21,14 @@ router.post('/',function(req,res,next){
         scriptPath:'/home/pi/Downloads/smart-cradle-master/server/',
         //args:['python']
     };
-
-
-
-    PythonShell.run('testsoundpwmmotor.py',options,function(err,results){
+    if(req.body.msg=='CRYON') {
+        PythonShell.run('testsoundpwmmotor.py',options,function(err,results){
         if(err) throw err;
         res.send();
         //console.log('hi %j',results);
     });
+    }
+    
 });
 
 module.exports = router;

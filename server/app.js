@@ -4,8 +4,6 @@ var bodyParser = require('body-parser')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-//var multer = require('multer');
-//var formidable = require('formidable');
 var mongoose = require('mongoose');
 var cors = require('cors');
 var con = require('./con');
@@ -28,18 +26,12 @@ function connect(mongo) {
   })
 }
 
-/*
-mongoose.connect(mongo, {useNewUrlParser: true}, (err) => {
-  if(!err) { console.log('MongoDB connection succeeded'); }
-  else { console.log('MongoDB connection is error'+ JSON.stringify(err, undefined, 2)); }
-});
-*/
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var boardRouter = require('./routes/boards');
 var uploadimageR = require('./routes/uploadimage');
 var controlRouter = require('./routes/controls');
-var uploadsoundR = require('./routes/uploadsound')//upload sound
+var uploadsoundR = require('./routes/uploadsound')
 var cryRouter = require('./routes/cry');
 
 var app = express();
@@ -55,8 +47,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/uploads',express.static('uploads'))
-//app.use(express.urlencoded({upload: 'multipart'}));
-//app.use(multer({dest:"./uploads/"}).single('myFile'));
+app.use('/boards', express.static('uploads'));
 
 
 app.use('/', indexRouter);

@@ -33,7 +33,19 @@ router.post('/', function(req, res, next) {
           res.send(err);
         } 
         else { 
-            res.send({success:true, data:user.history.reverse()})
+            res.send({success:true, data: user.history.reverse()})
+        }
+      })
+});
+
+  //특정 id의 history데이터 시간역순으로 불러옴
+router.post('/img', function(req, res, next) {
+    User_info.findOne({'id': req.body.id}, function(err, user){
+        if (err) {
+          res.send(err);
+        } 
+        else { 
+            res.send({success:true, data: user.imgpath.reverse()})
         }
       })
 });
@@ -61,7 +73,6 @@ router.post('/sleep',function(req,res){
   var new_data = {
     date: date,
     sleep: history,
-    img_path: null
   }
   User_info.findOne({'id': localuser}, function(err, user){
     
@@ -72,9 +83,9 @@ router.post('/sleep',function(req,res){
       console.err(err);
       throw err;
     }      
-    user.update({'history':History}, function() {res.send(History)});
+    user.update({'history':History}, function() {res.send(new_data)});
     
-    })
+  })
 });
 
 module.exports = router;
